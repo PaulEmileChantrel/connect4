@@ -1,4 +1,4 @@
-from player import HumanPlayer,RandomComputerPlayer
+from player import HumanPlayer,RandomComputerPlayer,SmartComputerPlayer
 import time
 class Connect4:
     def __init__(self):
@@ -26,6 +26,8 @@ class Connect4:
         availble = [i for i in range (7) if any([self.board[j]==' ' for j in range(i,42,7)])]
         return availble
 
+    def num_of_empty(self):
+        return len([i for i in self.board if i ==' '])
     def can_play(self):
         return ' ' in self.board
 
@@ -39,7 +41,8 @@ class Connect4:
             else:
                 break
         self.board[position] = letter
-
+        self.won = self.is_winning_move(position,letter)
+        self.current_winner = letter if self.won else None
         return position
         #self.is_winning_move(position,letter)
 
@@ -50,7 +53,7 @@ class Connect4:
         if position<21: #we can't pile 4 otherwise
             if all([self.board[position+j*7]==letter for j in range(4)]):
                 return True
-        
+
         #check in row
         row = position//7
 
@@ -60,8 +63,8 @@ class Connect4:
         #check in diagonal 1
         # diagonal 1 is [position -6, position , position+6] if row -1, row, row +1
 
-        for i in range(position-6*4,position+1,6):
-            print(i)
+        for i in range(position-6*3,position+1,6):
+            
             if 3<=i<=20:#doesnt work for i outside
                 rows = []
                 result = []
@@ -76,7 +79,7 @@ class Connect4:
 
         #check in diagonal 2
         # diagonal 2 is [position -8, position , position+8] if row -1, row, row +1
-        for i in range(position-8*4,position+1,8):
+        for i in range(position-8*3,position+1,8):
             if 0<=i<=41-3*8:#doesnt work for i outside
                 rows = []
                 result = []
@@ -100,8 +103,9 @@ def play(game,x_player,o_player,print_game=True):
     while game.can_play():
         move = current_player.get_move(game)
         position = game.make_move(move,letter)
-        if game.is_winning_move(position,letter):
+        if game.won:
             game.print_board()
+
             print(f'Congrats! Player {letter} won the game!')
             return
         current_player = o_player if current_player == x_player else x_player
@@ -109,12 +113,12 @@ def play(game,x_player,o_player,print_game=True):
         if print_game:
             Connect4.print_moves()
             game.print_board()
-        time.sleep(1)
+        time.sleep(0.5)
 
     print(f'It\'s a tie!')
 
 if __name__ =='__main__':
     game = Connect4()
     x_player = HumanPlayer('X')
-    o_player = RandomComputerPlayer('O')
+    o_player = SmartComputerPlayer('O')
     play(game,x_player,o_player,print_game=True)

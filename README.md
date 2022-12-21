@@ -7,10 +7,12 @@ You xan select the player by changing the player classes at the end of the game.
 
 Have fun!
 
+<pre>
 | | | | | | | |
 | | |X| | | | |
 | |O|O| | | | |
 | |X|O| | | | |
 |X|X|X|X| | |O|
 |X|O|O|O|X|O|X|
-
+Congrats! Player X won the game!
+</pre>

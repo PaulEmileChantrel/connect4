@@ -66,8 +66,9 @@ class SmartComputerPlayer(Player):
             best = {'position':None,'score':-math.inf}#we want to maximize the score
         else:
             best = {'position':None,'score':math.inf}#we want to minimize the score
-
-        for possible_move in state.available_move():
+        moves = state.available_move()
+        random.shuffle(moves)
+        for possible_move in moves: #We suffle the array to avoid aving 0 as a fist move all the time
             #step 1 -> play a move
             position = state.make_move(possible_move,player)
 
